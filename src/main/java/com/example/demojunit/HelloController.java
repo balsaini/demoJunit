@@ -32,7 +32,7 @@ public class HelloController {
     }
 
     @RequestMapping(value = "v1/sayHelloRESTSaveToMongo", method = RequestMethod.GET)
-    public ResponseEntity<HelloResponse> sayHelloObjectSaveToMongo() {
+    public ResponseEntity<SaveMongoResponse> sayHelloObjectSaveToMongo() {
 
         Party party = new Party();
         party.setFirstName("Dale");
@@ -41,13 +41,23 @@ public class HelloController {
 
 
 
-        HelloResponse helloResponse = new HelloResponse();
-        helloResponse.setGreeting("Sat Sri Akal!");
-        helloResponse.setCounter(2);
+
+        Party party1 = null;
+
 
         partyRepository.save(party);
 
-        ResponseEntity<HelloResponse> helloResponseResponseEntity = new ResponseEntity<>(helloResponse, HttpStatus.OK);
+        party1 = partyRepository.findOneById(party.getId());
+
+        SaveMongoResponse saveMongoResponse = new SaveMongoResponse();
+
+        saveMongoResponse.setId(party1.getId());
+        saveMongoResponse.setPartyId(party1.getPartyId());
+
+
+
+
+        ResponseEntity<SaveMongoResponse> helloResponseResponseEntity = new ResponseEntity<>(saveMongoResponse, HttpStatus.OK);
 
         return helloResponseResponseEntity;
 
